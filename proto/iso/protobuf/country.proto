@@ -1,0 +1,551 @@
+syntax = "proto3";
+
+package iso.protobuf;
+
+option go_package = "github.com/nycmonkey/iso";
+
+
+// ISO Country codes, plus a couple of FactSet additions
+enum Country {
+	UNKNOWN_COUNTRY = 0;
+	 // Supranational
+	 SUPRANATIONAL = 1;
+	 // N/A
+	 NOT_APPLICABLE = 2;
+	 // Andorra
+	 AD = 3;
+	 // United Arab Emirates
+	 AE = 4;
+	 // Afghanistan
+	 AF = 5;
+	 // Antigua and Barbuda
+	 AG = 6;
+	 // Anguilla
+	 AI = 7;
+	 // Albania
+	 AL = 8;
+	 // Armenia
+	 AM = 9;
+	 // Netherlands Antilles
+	 AN = 10;
+	 // Angola
+	 AO = 11;
+	 // Asia Pacific Region
+	 AP = 12;
+	 // Antarctica
+	 AQ = 13;
+	 // Argentina
+	 AR = 14;
+	 // American Samoa
+	 AS = 15;
+	 // Austria
+	 AT = 16;
+	 // Australia
+	 AU = 17;
+	 // Aruba
+	 AW = 18;
+	 // Aland Islands
+	 AX = 19;
+	 // Azerbaijan
+	 AZ = 20;
+	 // Bosnia and Herzegovina
+	 BA = 21;
+	 // Barbados
+	 BB = 22;
+	 // Bangladesh
+	 BD = 23;
+	 // Belgium
+	 BE = 24;
+	 // Burkina Faso
+	 BF = 25;
+	 // Bulgaria
+	 BG = 26;
+	 // Bahrain
+	 BH = 27;
+	 // Burundi
+	 BI = 28;
+	 // Benin
+	 BJ = 29;
+	 // Saint Barthelemy
+	 BL = 30;
+	 // Bermuda
+	 BM = 31;
+	 // Brunei
+	 BN = 32;
+	 // Bolivia
+	 BO = 33;
+	 // Bonaire, St. Eust., Saba
+	 BQ = 34;
+	 // Brazil
+	 BR = 35;
+	 // Bahamas
+	 BS = 36;
+	 // Bhutan
+	 BT = 37;
+	 // Bouvet Island
+	 BV = 38;
+	 // Botswana
+	 BW = 39;
+	 // Belarus
+	 BY = 40;
+	 // Belize
+	 BZ = 41;
+	 // Canada
+	 CA = 42;
+	 // Cocos (Keeling) Islands
+	 CC = 43;
+	 // Congo (Dem. Rep. of the)
+	 CD = 44;
+	 // Central African Republic
+	 CF = 45;
+	 // Congo (Rep. of)
+	 CG = 46;
+	 // Switzerland
+	 CH = 47;
+	 // Ivory Coast
+	 CI = 48;
+	 // Cook Islands
+	 CK = 49;
+	 // Chile
+	 CL = 50;
+	 // Cameroon
+	 CM = 51;
+	 // China
+	 CN = 52;
+	 // Colombia
+	 CO = 53;
+	 // Costa Rica
+	 CR = 54;
+	 // Serbia & Montenegro
+	 CS = 55;
+	 // Cuba
+	 CU = 56;
+	 // Cape Verde
+	 CV = 57;
+	 // Curacao
+	 CW = 58;
+	 // Christmas Island
+	 CX = 59;
+	 // Cyprus
+	 CY = 60;
+	 // Czech Republic
+	 CZ = 61;
+	 // East Germany
+	 DD = 62;
+	 // Germany
+	 DE = 63;
+	 // Djibouti
+	 DJ = 64;
+	 // Denmark
+	 DK = 65;
+	 // Dominica
+	 DM = 66;
+	 // Dominican Republic
+	 DO = 67;
+	 // Algeria
+	 DZ = 68;
+	 // Ecuador
+	 EC = 69;
+	 // Estonia
+	 EE = 70;
+	 // Egypt
+	 EG = 71;
+	 // Western Sahara
+	 EH = 72;
+	 // Eritrea
+	 ER = 73;
+	 // Spain
+	 ES = 74;
+	 // Ethiopia
+	 ET = 75;
+	 // Europe Region
+	 EU = 76;
+	 // Finland
+	 FI = 77;
+	 // Fiji
+	 FJ = 78;
+	 // Falkland Islands
+	 FK = 79;
+	 // Micronesia
+	 FM = 80;
+	 // Faroe Islands
+	 FO = 81;
+	 // France
+	 FR = 82;
+	 // Gabon
+	 GA = 83;
+	 // United Kingdom
+	 GB = 84;
+	 // Grenada
+	 GD = 85;
+	 // Georgia
+	 GE = 86;
+	 // French Guiana
+	 GF = 87;
+	 // Guernsey
+	 GG = 88;
+	 // Ghana
+	 GH = 89;
+	 // Gibraltar
+	 GI = 90;
+	 // Greenland
+	 GL = 91;
+	 // Gambia
+	 GM = 92;
+	 // Guinea
+	 GN = 93;
+	 // Guadeloupe
+	 GP = 94;
+	 // Equatorial Guinea
+	 GQ = 95;
+	 // Greece
+	 GR = 96;
+	 // So Georgia & So Sand Isl
+	 GS = 97;
+	 // Guatemala
+	 GT = 98;
+	 // Guam
+	 GU = 99;
+	 // Guinea-Bissau
+	 GW = 100;
+	 // Guyana
+	 GY = 101;
+	 // Hong Kong
+	 HK = 102;
+	 // Heard & McDonald Islands
+	 HM = 103;
+	 // Honduras
+	 HN = 104;
+	 // Croatia
+	 HR = 105;
+	 // Haiti
+	 HT = 106;
+	 // Hungary
+	 HU = 107;
+	 // Indonesia
+	 ID = 108;
+	 // Ireland
+	 IE = 109;
+	 // Israel
+	 IL = 110;
+	 // Isle of Man
+	 IM = 111;
+	 // India
+	 IN = 112;
+	 // Brit. Indian Ocean Terr.
+	 IO = 113;
+	 // Iraq
+	 IQ = 114;
+	 // Iran
+	 IR = 115;
+	 // Iceland
+	 IS = 116;
+	 // Italy
+	 IT = 117;
+	 // Jersey
+	 JE = 118;
+	 // Jamaica
+	 JM = 119;
+	 // Jordan
+	 JO = 120;
+	 // Japan
+	 JP = 121;
+	 // Kenya
+	 KE = 122;
+	 // Kyrgyzstan
+	 KG = 123;
+	 // Cambodia
+	 KH = 124;
+	 // Kiribati
+	 KI = 125;
+	 // Comoros
+	 KM = 126;
+	 // Saint Kitts and Nevis
+	 KN = 127;
+	 // North Korea
+	 KP = 128;
+	 // South Korea
+	 KR = 129;
+	 // Kuwait
+	 KW = 130;
+	 // Cayman Islands
+	 KY = 131;
+	 // Kazakhstan
+	 KZ = 132;
+	 // Laos
+	 LA = 133;
+	 // Lebanon
+	 LB = 134;
+	 // St. Lucia
+	 LC = 135;
+	 // Liechtenstein
+	 LI = 136;
+	 // Sri Lanka
+	 LK = 137;
+	 // Liberia
+	 LR = 138;
+	 // Lesotho
+	 LS = 139;
+	 // Lithuania
+	 LT = 140;
+	 // Luxembourg
+	 LU = 141;
+	 // Latvia
+	 LV = 142;
+	 // Libya
+	 LY = 143;
+	 // Morocco
+	 MA = 144;
+	 // Monaco
+	 MC = 145;
+	 // Moldova
+	 MD = 146;
+	 // Montenegro
+	 ME = 147;
+	 // Saint Martin
+	 MF = 148;
+	 // Madagascar
+	 MG = 149;
+	 // Marshall Islands
+	 MH = 150;
+	 // Macedonia
+	 MK = 151;
+	 // Mali
+	 ML = 152;
+	 // Myanmar
+	 MM = 153;
+	 // Mongolia
+	 MN = 154;
+	 // Macau
+	 MO = 155;
+	 // Marianas
+	 MP = 156;
+	 // Martinique
+	 MQ = 157;
+	 // Mauritania
+	 MR = 158;
+	 // Montserrat
+	 MS = 159;
+	 // Malta
+	 MT = 160;
+	 // Mauritius
+	 MU = 161;
+	 // Maldives
+	 MV = 162;
+	 // Malawi
+	 MW = 163;
+	 // Mexico
+	 MX = 164;
+	 // Malaysia
+	 MY = 165;
+	 // Mozambique
+	 MZ = 166;
+	 // Namibia
+	 NA = 167;
+	 // New Caledonia
+	 NC = 168;
+	 // Niger
+	 NE = 169;
+	 // Norfolk Island
+	 NF = 170;
+	 // Nigeria
+	 NG = 171;
+	 // Nicaragua
+	 NI = 172;
+	 // Netherlands
+	 NL = 173;
+	 // Norway
+	 NO = 174;
+	 // Nepal
+	 NP = 175;
+	 // Nauru
+	 NR = 176;
+	 // Niue
+	 NU = 177;
+	 // New Zealand
+	 NZ = 178;
+	 // Oman
+	 OM = 179;
+	 // Panama
+	 PA = 180;
+	 // Peru
+	 PE = 181;
+	 // French Polynesia
+	 PF = 182;
+	 // Papua New Guinea
+	 PG = 183;
+	 // Philippines
+	 PH = 184;
+	 // Pakistan
+	 PK = 185;
+	 // Poland
+	 PL = 186;
+	 // Saint Pierre & Miquelon
+	 PM = 187;
+	 // Pitcairn
+	 PN = 188;
+	 // Puerto Rico
+	 PR = 189;
+	 // Palestine
+	 PS = 190;
+	 // Portugal
+	 PT = 191;
+	 // Palau
+	 PW = 192;
+	 // Paraguay
+	 PY = 193;
+	 // Qatar
+	 QA = 194;
+	 // La Reunion
+	 RE = 195;
+	 // Romania
+	 RO = 196;
+	 // Serbia
+	 RS = 197;
+	 // Russian Federation
+	 RU = 198;
+	 // Rwanda
+	 RW = 199;
+	 // Saudi Arabia
+	 SA = 200;
+	 // Solomon Islands
+	 SB = 201;
+	 // Seychelles
+	 SC = 202;
+	 // Sudan
+	 SD = 203;
+	 // Sweden
+	 SE = 204;
+	 // Singapore
+	 SG = 205;
+	 // Saint Helena
+	 SH = 206;
+	 // Slovenia
+	 SI = 207;
+	 // Svalbard and Jan Mayen
+	 SJ = 208;
+	 // Slovakia
+	 SK = 209;
+	 // Sierra Leone
+	 SL = 210;
+	 // San Marino
+	 SM = 211;
+	 // Senegal
+	 SN = 212;
+	 // Somalia
+	 SO = 213;
+	 // Suriname
+	 SR = 214;
+	 // South Sudan
+	 SS = 215;
+	 // Sao Tome and Principe
+	 ST = 216;
+	 // Soviet Union
+	 SU = 217;
+	 // El Salvador
+	 SV = 218;
+	 // Sint Marten
+	 SX = 219;
+	 // Syria
+	 SY = 220;
+	 // Swaziland
+	 SZ = 221;
+	 // Turks and Caicos Islands
+	 TC = 222;
+	 // Chad
+	 TD = 223;
+	 // French Southern Terr.
+	 TF = 224;
+	 // Togo
+	 TG = 225;
+	 // Thailand
+	 TH = 226;
+	 // Tajikistan
+	 TJ = 227;
+	 // Tokelau
+	 TK = 228;
+	 // Timor-Leste
+	 TL = 229;
+	 // Turkmenistan
+	 TM = 230;
+	 // Tunisia
+	 TN = 231;
+	 // Tonga
+	 TO = 232;
+	 // Turkey
+	 TR = 233;
+	 // Trinidad and Tobago
+	 TT = 234;
+	 // Tuvalu
+	 TV = 235;
+	 // Taiwan
+	 TW = 236;
+	 // Tanzania
+	 TZ = 237;
+	 // Ukraine
+	 UA = 238;
+	 // Uganda
+	 UG = 239;
+	 // U.S. Minor Outlying Isl.
+	 UM = 240;
+	 // United States
+	 US = 241;
+	 // Uruguay
+	 UY = 242;
+	 // Uzbekistan
+	 UZ = 243;
+	 // Vatican City
+	 VA = 244;
+	 // St Vincent & Grenadines
+	 VC = 245;
+	 // North Vietnam
+	 VD = 246;
+	 // Venezuela
+	 VE = 247;
+	 // British Virgin Islands
+	 VG = 248;
+	 // U.S. Virgin Islands
+	 VI = 249;
+	 // Vietnam
+	 VN = 250;
+	 // Vanuatu
+	 VU = 251;
+	 // Wallis & Futuna
+	 WF = 252;
+	 // Samoa
+	 WS = 253;
+	 // Kosovo
+	 XK = 254;
+	 // Afr/Mid-East Unallocated
+	 XP = 255;
+	 // Asia/Pacific Unallocated
+	 XR = 256;
+	 // Americas Unallocated
+	 XS = 257;
+	 // Europe Unallocated
+	 XT = 258;
+	 // Zanzibar
+	 XU = 259;
+	 // Tanganyika
+	 XV = 260;
+	 // Non-Geographic Revenue
+	 XW = 261;
+	 // Non-Operating Country
+	 XY = 262;
+	 // Unspecified
+	 XZ = 263;
+	 // South Yemen
+	 YD = 264;
+	 // Yemen
+	 YE = 265;
+	 // Mayotte
+	 YT = 266;
+	 // Yugoslavia
+	 YU = 267;
+	 // South Africa
+	 ZA = 268;
+	 // Zambia
+	 ZM = 269;
+	 // Zimbabwe
+	 ZW = 270;
+ }

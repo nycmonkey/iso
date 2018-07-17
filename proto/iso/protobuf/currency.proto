@@ -1,0 +1,560 @@
+syntax = "proto3";
+
+package iso.protobuf;
+
+option go_package = "github.com/nycmonkey/iso"; 
+
+enum Currency {
+	// N/A (active)
+	UNKNOWN_CURRENCY = 0;
+	// Andorran Peseta (inactive)
+	ADP = 1;
+	// Andorran Franc (inactive)
+	ADR = 2;
+	// U.A.E. Dirham (active)
+	AED = 3;
+	// Afghan Afghani (inactive)
+	AFA = 4;
+	// Afghan Afghani (active)
+	AFN = 5;
+	// Albanian Old Lek (inactive)
+	ALK = 6;
+	// Albanian Lek (active)
+	ALL = 7;
+	// Armenian Dram (active)
+	AMD = 8;
+	// Netherlands Antillean Guilder (active)
+	ANG = 9;
+	// Angolan Kwanza (active)
+	AOA = 10;
+	// Angolan New Kwanza (inactive)
+	AON = 11;
+	// Angolan Kwanza (inactive)
+	AOR = 12;
+	// Argentine Austral (inactive)
+	ARA = 13;
+	// Argentine Peso Ley (inactive)
+	ARL = 14;
+	// Argentine Peso Moneda Nacional (inactive)
+	ARM = 15;
+	// Argentine Peso Argentino (inactive)
+	ARP = 16;
+	// Argentine Peso (active)
+	ARS = 17;
+	// Austrian Schilling (inactive)
+	ATS = 18;
+	// Australian Dollar (active)
+	AUD = 19;
+	// Aruban Guilder (active)
+	AWG = 20;
+	// Azerbaijanian Manat (inactive)
+	AZM = 21;
+	// Azerbaijanian New Manat (active)
+	AZN = 22;
+	// Bosnian Marka (active)
+	BAM = 23;
+	// Barbados Dollar (active)
+	BBD = 24;
+	// Bangladeshi Taka (active)
+	BDT = 25;
+	// Belgian Franc (inactive)
+	BEF = 26;
+	// Bulgarian Lev (inactive)
+	BGJ = 27;
+	// Bulgarian Lev (inactive)
+	BGK = 28;
+	// Bulgarian Lev (inactive)
+	BGL = 29;
+	// Bulgarian Lev (active)
+	BGN = 30;
+	// Bahraini Dinar (active)
+	BHD = 31;
+	// Burundian Franc (active)
+	BIF = 32;
+	// Bermudian Dollar (active)
+	BMD = 33;
+	// Brunei Dollar (active)
+	BND = 34;
+	// Bolivian Boliviano (active)
+	BOB = 35;
+	// Bolivian Peso (inactive)
+	BOP = 36;
+	// Bolivian Mvdol (funds code) (active)
+	BOV = 37;
+	// Brazilian Cruzeiro Novo (inactive)
+	BRB = 38;
+	// Brazilian Cruzado (inactive)
+	BRC = 39;
+	// Brazilian Cruzeiro (inactive)
+	BRE = 40;
+	// Brazilian Real (active)
+	BRL = 41;
+	// Brazilian Cruzado Novo (inactive)
+	BRN = 42;
+	// Brazilian Cruzeiro Real (inactive)
+	BRR = 43;
+	// Brazilian Cruzeiro (inactive)
+	BRZ = 44;
+	// Bahamian Dollar (active)
+	BSD = 45;
+	// Bhutan Ngultrum (active)
+	BTN = 46;
+	// Botswana Pula (active)
+	BWP = 47;
+	// Belarus Ruble (inactive)
+	BYB = 48;
+	// Belarus Ruble (active)
+	BYN = 49;
+	// Belarus Ruble (inactive)
+	BYR = 50;
+	// Belize Dollar (active)
+	BZD = 51;
+	// Canadian Dollar (active)
+	CAD = 52;
+	// Congolese Franc (active)
+	CDF = 53;
+	// Swiss Franc (active)
+	CHF = 54;
+	// Chilean Escudo (inactive)
+	CLE = 55;
+	// Chilean Unidad de Fomento (active)
+	CLF = 56;
+	// Chilean Peso (active)
+	CLP = 57;
+	// Chinese Yuan Renminbi (HK) (active)
+	CNH = 58;
+	// Chinese Yuan Renminbi (active)
+	CNY = 59;
+	// Colombian Peso (active)
+	COP = 60;
+	// Colombian Unidad de Valor Real (active)
+	COU = 61;
+	// Costa Rican Colon (active)
+	CRC = 62;
+	// Serbian Dinar (inactive)
+	CSD = 63;
+	// Czechoslovak Koruna (inactive)
+	CSK = 64;
+	// Cuban Convertible Peso (active)
+	CUC = 65;
+	// Cuban Peso (active)
+	CUP = 66;
+	// Cape Verdean Escudo (active)
+	CVE = 67;
+	// Cypriot Pound (inactive)
+	CYP = 68;
+	// Czech Koruna (active)
+	CZK = 69;
+	// East German Mark (inactive)
+	DDM = 70;
+	// German Deutsche Mark (inactive)
+	DEM = 71;
+	// Djibouti Franc (active)
+	DJF = 72;
+	// Danish Krone (active)
+	DKK = 73;
+	// Dominican Peso (active)
+	DOP = 74;
+	// Algerian Dinar (active)
+	DZD = 75;
+	// Ecuadoran Sucre (inactive)
+	ECS = 76;
+	// Ecuadoran Unidad de Valor Constante (inactive)
+	ECV = 77;
+	// Estonian Kroon (inactive)
+	EEK = 78;
+	// Egyptian Pound (active)
+	EGP = 79;
+	// Eritrean Nakfa (active)
+	ERN = 80;
+	// Spanish Peseta (inactive)
+	ESP = 81;
+	// Ethopian Birr (active)
+	ETB = 82;
+	// Euro (active)
+	EUR = 83;
+	// Finnish Markka (inactive)
+	FIM = 84;
+	// Fiji Dollar (active)
+	FJD = 85;
+	// Falkland Islands Pound (active)
+	FKP = 86;
+	// French Franc (inactive)
+	FRF = 87;
+	// British Pound (active)
+	GBP = 88;
+	// British Pound (Pence) (active)
+	GBX = 89;
+	// Georgian Lari (inactive)
+	GEK = 90;
+	// Georgian Lari (active)
+	GEL = 91;
+	// Ghanaian Cedi (inactive)
+	GHC = 92;
+	// Ghanaian Cedi (active)
+	GHS = 93;
+	// Gibraltar Pound (active)
+	GIP = 94;
+	// Gambian Daasi (active)
+	GMD = 95;
+	// Guinean Syli (inactive)
+	GNE = 96;
+	// Guinea Franc (active)
+	GNF = 97;
+	// Equatorial Guinean Ekwele (inactive)
+	GQE = 98;
+	// Greek Drachma (inactive)
+	GRD = 99;
+	// Guatemalan Quetzal (active)
+	GTQ = 100;
+	// Guinea-Bissau Peso (inactive)
+	GWP = 101;
+	// Guyanan Dollar (active)
+	GYD = 102;
+	// Hong Kong Dollar (active)
+	HKD = 103;
+	// Honduran Lempira (active)
+	HNL = 104;
+	// Croatian Kuna (active)
+	HRK = 105;
+	// Haitian Gourde (active)
+	HTG = 106;
+	// Hungarian Forint (active)
+	HUF = 107;
+	// Indonesian Rupiah (active)
+	IDR = 108;
+	// Irish Pound (inactive)
+	IEP = 109;
+	// Israeli Lira (inactive)
+	ILP = 110;
+	// Israeli Shekel (inactive)
+	ILR = 111;
+	// Israeli New Shekel (active)
+	ILS = 112;
+	// Israeli Agora (active)
+	ILX = 113;
+	// Indian Rupee (active)
+	INR = 114;
+	// Iraqi Dinar (active)
+	IQD = 115;
+	// Iranian Rial (active)
+	IRR = 116;
+	// Icelandic Old Krona (inactive)
+	ISJ = 117;
+	// Icelandic Krona (active)
+	ISK = 118;
+	// Italian Lira (inactive)
+	ITL = 119;
+	// Jamaican Dollar (active)
+	JMD = 120;
+	// Jordanian Dinar (active)
+	JOD = 121;
+	// Japanese Yen (active)
+	JPY = 122;
+	// Kenyan Shilling (active)
+	KES = 123;
+	// Kyrgyzstan Som (active)
+	KGS = 124;
+	// Cambodian Riel (active)
+	KHR = 125;
+	// Comoros Franc (active)
+	KMF = 126;
+	// North Korean Won (active)
+	KPW = 127;
+	// Korean Won (active)
+	KRW = 128;
+	// Kuwaiti Dinar (active)
+	KWD = 129;
+	// Caymanian Dollar (active)
+	KYD = 130;
+	// Kazakhstan Tenge (active)
+	KZT = 131;
+	// Lao Kip (inactive)
+	LAJ = 132;
+	// Lao Kip (active)
+	LAK = 133;
+	// Lebanese Pound (active)
+	LBP = 134;
+	// Sri Lankan Rupee (active)
+	LKR = 135;
+	// Liberian Dollar (active)
+	LRD = 136;
+	// Lesotho Loti (active)
+	LSL = 137;
+	// Lithuanian Litas (inactive)
+	LTL = 138;
+	// Luxembourg Franc (inactive)
+	LUF = 139;
+	// Latvian Lat (inactive)
+	LVL = 140;
+	// Libyan Dinar (active)
+	LYD = 141;
+	// Moroccan Dirham (active)
+	MAD = 142;
+	// Moroccan Franc (inactive)
+	MAF = 143;
+	// Monegasque Franc (inactive)
+	MCL = 144;
+	// Moldova Leu (active)
+	MDL = 145;
+	// Malagasy Ariary (active)
+	MGA = 146;
+	// Malagasy Franc (inactive)
+	MGF = 147;
+	// Macedonian Denar (active)
+	MKD = 148;
+	// Old Macedonian Denar (inactive)
+	MKN = 149;
+	// Mali Franc (inactive)
+	MLF = 150;
+	// Myanmar Kyats (active)
+	MMK = 151;
+	// Mongolia Togrog (active)
+	MNT = 152;
+	// Macau Pataca (active)
+	MOP = 153;
+	// Mauritanian Ouguiya (active)
+	MRO = 154;
+	// Maltese Lira (inactive)
+	MTL = 155;
+	// Maltese Pound (inactive)
+	MTP = 156;
+	// Mauritius Rupee (active)
+	MUR = 157;
+	// Maldive Rupee (inactive)
+	MVQ = 158;
+	// Maldive Rufiyaa (active)
+	MVR = 159;
+	// Malawi Kwacha (active)
+	MWK = 160;
+	// Mexican Peso (active)
+	MXN = 161;
+	// Mexican Peso (inactive)
+	MXP = 162;
+	// Mexican Unidad de Inversion (UDI) (active)
+	MXV = 163;
+	// Malaysian Ringgit (active)
+	MYR = 164;
+	// Mozambican Metical (inactive)
+	MZM = 165;
+	// Mozambican Metical (active)
+	MZN = 166;
+	// Namibian Dollar (active)
+	NAD = 167;
+	// Newfoundland Dollar (inactive)
+	NFD = 168;
+	// Nigerian Naira (active)
+	NGN = 169;
+	// Nicaraguan Cordoba Oro (active)
+	NIO = 170;
+	// Dutch Guilder (inactive)
+	NLG = 171;
+	// Norwegian Krone (active)
+	NOK = 172;
+	// Nepalese Rupee (active)
+	NPR = 173;
+	// New Zealand Dollar (active)
+	NZD = 174;
+	// Omani Rial (active)
+	OMR = 175;
+	// Panamanian Balboa (active)
+	PAB = 176;
+	// Peruvian Sol (inactive)
+	PEH = 177;
+	// Peruvian Inti (inactive)
+	PEI = 178;
+	// Peruvian Nuevo Sol (active)
+	PEN = 179;
+	// Papua New Guinea Kina (active)
+	PGK = 180;
+	// Philippine Peso (active)
+	PHP = 181;
+	// Pakistani Rupee (active)
+	PKR = 182;
+	// Polish Zloty (active)
+	PLN = 183;
+	// Polish Zloty (inactive)
+	PLZ = 184;
+	// Portuguese Escudo (inactive)
+	PTE = 185;
+	// Paraguay Guarini (active)
+	PYG = 186;
+	// Qatari Rial (active)
+	QAR = 187;
+	// Romanian Leu (inactive)
+	ROK = 188;
+	// Romanian Leu (inactive)
+	ROL = 189;
+	// Romanian Leu (active)
+	RON = 190;
+	// Serbian Dinar (active)
+	RSD = 191;
+	// Russian Ruble (active)
+	RUB = 192;
+	// Russian Ruble (inactive)
+	RUR = 193;
+	// Rwandan Franc (active)
+	RWF = 194;
+	// Saudi Arabian Riyal (active)
+	SAR = 195;
+	// Solomon Islands Dollar (active)
+	SBD = 196;
+	// Seychelle Rupee (active)
+	SCR = 197;
+	// Sudanese Dinar (inactive)
+	SDD = 198;
+	// Sudanese Pound (active)
+	SDG = 199;
+	// Swedish Krona (active)
+	SEK = 200;
+	// Singapore Dollar (active)
+	SGD = 201;
+	// Saint Helenian Pound (active)
+	SHP = 202;
+	// Slovenian Tolar (inactive)
+	SIT = 203;
+	// Slovakian Koruna (inactive)
+	SKK = 204;
+	// Sierra Leone Leone (active)
+	SLL = 205;
+	// San Marinese Lira (inactive)
+	SML = 206;
+	// Somali Shilling (active)
+	SOS = 207;
+	// Suriname Dollar (active)
+	SRD = 208;
+	// Suriname Guilder (inactive)
+	SRG = 209;
+	// South Sudanese Pound (active)
+	SSP = 210;
+	// Sao Tome and Principe Dobra (active)
+	STD = 211;
+	// Soviet Union Ruble (inactive)
+	SUR = 212;
+	// Salvadoran Colon (inactive)
+	SVC = 213;
+	// Syrian Pound (active)
+	SYP = 214;
+	// Swaziland Lilangeni (active)
+	SZL = 215;
+	// Thai Baht (active)
+	THB = 216;
+	// Tajikistani Ruble (inactive)
+	TJR = 217;
+	// Tajikistani Somoni (active)
+	TJS = 218;
+	// Turkmenistani Manat (inactive)
+	TMM = 219;
+	// Turkmenistani Manat (active)
+	TMT = 220;
+	// Tunisian Dinar (active)
+	TND = 221;
+	// Tongan Pa'anga (active)
+	TOP = 222;
+	// Portuguese Timorese Escudo (inactive)
+	TPE = 223;
+	// Turkish Lira (inactive)
+	TRL = 224;
+	// Turkish Lira (active)
+	TRY = 225;
+	// Trinidad and Tobago Dollar (active)
+	TTD = 226;
+	// Taiwan Dollar (active)
+	TWD = 227;
+	// Tanzanian Shilling (active)
+	TZS = 228;
+	// Ukrainian Hryvna (active)
+	UAH = 229;
+	// Ukrainian Karbovanets (inactive)
+	UAK = 230;
+	// Uganda Shilling (inactive)
+	UGS = 231;
+	// Uganda Shilling (active)
+	UGX = 232;
+	// U.S. Dollar (active)
+	USD = 233;
+	// Uruguay Peso en Unidades Indexadas (active)
+	UYI = 234;
+	// Uruguayan Old Peso (inactive)
+	UYN = 235;
+	// Uruguayan Peso (active)
+	UYU = 236;
+	// Uzbekistan Sum (active)
+	UZS = 237;
+	// Vatican Lira (inactive)
+	VAL = 238;
+	// Venezuelan Old Bolivar (inactive)
+	VEB = 239;
+	// Venezuelan Bolivar (active)
+	VEF = 240;
+	// Vietnamese Old Dong (inactive)
+	VNC = 241;
+	// Vietnamese Dong (active)
+	VND = 242;
+	// Vanuatu Vatu (active)
+	VUV = 243;
+	// Samoan Tala (active)
+	WST = 244;
+	// CFA Franc (BEAC) (active)
+	XAF = 245;
+	// Silver (ounces) (inactive)
+	XAG = 246;
+	// Gold (ounces) (inactive)
+	XAU = 247;
+	// East Caribbean Dollar (active)
+	XCD = 248;
+	// IMF Special Drawing Rts (inactive)
+	XDR = 249;
+	// European Currency Unit (inactive)
+	XEU = 250;
+	// Gold Franc (inactive)
+	XFO = 251;
+	// CFA Franc (BCEAO) (active)
+	XOF = 252;
+	// Palladium (ounces) (active)
+	XPD = 253;
+	// CFP Franc (active)
+	XPF = 254;
+	// Platinum (ounces) (active)
+	XPT = 255;
+	// South Yemeni Dinar (inactive)
+	YDD = 256;
+	// Yemeni Rial (active)
+	YER = 257;
+	// Yugoslav Dinar (inactive)
+	YOU = 258;
+	// Yugoslav Dinar (inactive)
+	YUD = 259;
+	// Yugoslav Dinar (inactive)
+	YUG = 260;
+	// Yugoslav Dinar (inactive)
+	YUM = 261;
+	// Yugoslav Dinar (inactive)
+	YUN = 262;
+	// Yugoslav Dinar (inactive)
+	YUR = 263;
+	// Yugoslav Dinar (inactive)
+	YUS = 264;
+	// South African Financial Rand (inactive)
+	ZAL = 265;
+	// South African Rand (active)
+	ZAR = 266;
+	// Zambian Kwacha (inactive)
+	ZMK = 267;
+	// Zambian New Kwacha (active)
+	ZMW = 268;
+	// Zairean Zaire (inactive)
+	ZRN = 269;
+	// Zairean Zaire (inactive)
+	ZRZ = 270;
+	// Rhodesian Dollar (inactive)
+	ZWC = 271;
+	// Zimbabwean Dollar (inactive)
+	ZWD = 272;
+	// Zimbabwean Dollar (active)
+	ZWL = 273;
+	// Zimbabwean Dollar (inactive)
+	ZWN = 274;
+	// Zimbabwean Dollar (inactive)
+	ZWR = 275;
+}
