@@ -104,6 +104,8 @@ func extendable(p interface{}) (extendableProto, error) {
 			return nil, fmt.Errorf("proto: nil %T is not extendable", p)
 		}
 		return extensionAdapter{p}, nil
+	case extensionsBytes:
+		return slowExtensionAdapter{p}, nil
 	}
 	// Don't allocate a specific error containing %T:
 	// this is the hot path for Clone and MarshalText.
@@ -192,6 +194,12 @@ type Extension struct {
 
 // SetRawExtension is for testing only.
 func SetRawExtension(base Message, id int32, b []byte) {
+	if ebase, ok := base.(extensionsBytes); ok {
+		clearExtension(base, id)
+		ext := ebase.GetExtensions()
+		*ext = append(*ext, b...)
+		return
+	}
 	epb, err := extendable(base)
 	if err != nil {
 		return
@@ -216,6 +224,9 @@ func checkExtensionTypes(pb extendableProto, extension *ExtensionDesc) error {
 	// Check the extended type.
 	if ea, ok := pbi.(extensionAdapter); ok {
 		pbi = ea.extendableProtoV1
+	}
+	if ea, ok := pbi.(slowExtensionAdapter); ok {
+		pbi = ea.extensionsBytes
 	}
 	if a, b := reflect.TypeOf(pbi), reflect.TypeOf(extension.ExtendedType); a != b {
 		return fmt.Errorf("proto: bad extended type; %v does not extend %v", b, a)
@@ -265,6 +276,26 @@ func extensionProperties(ed *ExtensionDesc) *Properties {
 
 // HasExtension returns whether the given extension is present in pb.
 func HasExtension(pb Message, extension *ExtensionDesc) bool {
+	if epb, doki := pb.(extensionsBytes); doki {
+		ext := epb.GetExtensions()
+		buf := *ext
+		o := 0
+		for o < len(buf) {
+			tag, n := DecodeVarint(buf[o:])
+			fieldNum := int32(tag >> 3)
+			if int32(fieldNum) == extension.Field {
+				return true
+			}
+			wireType := int(tag & 0x7)
+			o += n
+			l, err := size(buf[o:], wireType)
+			if err != nil {
+				return false
+			}
+			o += l
+		}
+		return false
+	}
 	// TODO: Check types, field numbers, etc.?
 	epb, err := extendable(pb)
 	if err != nil {
@@ -282,13 +313,24 @@ func HasExtension(pb Message, extension *ExtensionDesc) bool {
 
 // ClearExtension removes the given extension from pb.
 func ClearExtension(pb Message, extension *ExtensionDesc) {
+	clearExtension(pb, extension.Field)
+}
+
+func clearExtension(pb Message, fieldNum int32) {
+	if epb, ok := pb.(extensionsBytes); ok {
+		offset := 0
+		for offset != -1 {
+			offset = deleteExtension(epb, fieldNum, offset)
+		}
+		return
+	}
 	epb, err := extendable(pb)
 	if err != nil {
 		return
 	}
 	// TODO: Check types, field numbers, etc.?
 	extmap := epb.extensionsWrite()
-	delete(extmap, extension.Field)
+	delete(extmap, fieldNum)
 }
 
 // GetExtension retrieves a proto2 extended field from pb.
@@ -301,6 +343,11 @@ func ClearExtension(pb Message, extension *ExtensionDesc) {
 // If the descriptor is not type complete (i.e., ExtensionDesc.ExtensionType is nil),
 // then GetExtension returns the raw encoded bytes of the field extension.
 func GetExtension(pb Message, extension *ExtensionDesc) (interface{}, error) {
+	if epb, doki := pb.(extensionsBytes); doki {
+		ext := epb.GetExtensions()
+		return decodeExtensionFromBytes(extension, *ext)
+	}
+
 	epb, err := extendable(pb)
 	if err != nil {
 		return nil, err
@@ -308,8 +355,8 @@ func GetExtension(pb Message, extension *ExtensionDesc) (interface{}, error) {
 
 	if extension.ExtendedType != nil {
 		// can only check type if this is a complete descriptor
-		if err := checkExtensionTypes(epb, extension); err != nil {
-			return nil, err
+		if cerr := checkExtensionTypes(epb, extension); cerr != nil {
+			return nil, cerr
 		}
 	}
 
@@ -479,6 +526,15 @@ func ExtensionDescs(pb Message) ([]*ExtensionDesc, error) {
 
 // SetExtension sets the specified extension of pb to the specified value.
 func SetExtension(pb Message, extension *ExtensionDesc, value interface{}) error {
+	if epb, ok := pb.(extensionsBytes); ok {
+		newb, err := encodeExtension(extension, value)
+		if err != nil {
+			return err
+		}
+		bb := epb.GetExtensions()
+		*bb = append(*bb, newb...)
+		return nil
+	}
 	epb, err := extendable(pb)
 	if err != nil {
 		return err
@@ -506,6 +562,11 @@ func SetExtension(pb Message, extension *ExtensionDesc, value interface{}) error
 
 // ClearAllExtensions clears all extensions from pb.
 func ClearAllExtensions(pb Message) {
+	if epb, doki := pb.(extensionsBytes); doki {
+		ext := epb.GetExtensions()
+		*ext = []byte{}
+		return
+	}
 	epb, err := extendable(pb)
 	if err != nil {
 		return

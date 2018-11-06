@@ -175,21 +175,21 @@ func (di *discardInfo) computeDiscardInfo() {
 			case !isPointer:
 				panic(fmt.Sprintf("%v.%s cannot be a direct struct value", t, f.Name))
 			case isSlice: // E.g., []*pb.T
-				di := getDiscardInfo(tf)
+				discardInfo := getDiscardInfo(tf)
 				dfi.discard = func(src pointer) {
 					sps := src.getPointerSlice()
 					for _, sp := range sps {
 						if !sp.isNil() {
-							di.discard(sp)
+							discardInfo.discard(sp)
 						}
 					}
 				}
 			default: // E.g., *pb.T
-				di := getDiscardInfo(tf)
+				discardInfo := getDiscardInfo(tf)
 				dfi.discard = func(src pointer) {
 					sp := src.getPointer()
 					if !sp.isNil() {
-						di.discard(sp)
+						discardInfo.discard(sp)
 					}
 				}
 			}

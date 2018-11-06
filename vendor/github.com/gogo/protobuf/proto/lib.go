@@ -99,7 +99,7 @@ The resulting file, test.pb.go, is:
 
 	package example
 
-	import proto "github.com/golang/protobuf/proto"
+	import proto "github.com/gogo/protobuf/proto"
 	import math "math"
 
 	type FOO int32
@@ -226,7 +226,7 @@ To create and play with a Test object:
 	import (
 		"log"
 
-		"github.com/golang/protobuf/proto"
+		"github.com/gogo/protobuf/proto"
 		pb "./example.pb"
 	)
 
@@ -465,7 +465,7 @@ func (p *Buffer) DebugPrint(s string, b []byte) {
 	var u uint64
 
 	obuf := p.buf
-	index := p.index
+	sindex := p.index
 	p.buf = b
 	p.index = 0
 	depth := 0
@@ -560,7 +560,7 @@ out:
 	fmt.Printf("\n")
 
 	p.buf = obuf
-	p.index = index
+	p.index = sindex
 }
 
 // SetDefaults sets unset protocol buffer fields to their default values.
@@ -904,11 +904,11 @@ func isProto3Zero(v reflect.Value) bool {
 
 // ProtoPackageIsVersion2 is referenced from generated protocol buffer files
 // to assert that that code is compatible with this version of the proto package.
-const ProtoPackageIsVersion2 = true
+const GoGoProtoPackageIsVersion2 = true
 
 // ProtoPackageIsVersion1 is referenced from generated protocol buffer files
 // to assert that that code is compatible with this version of the proto package.
-const ProtoPackageIsVersion1 = true
+const GoGoProtoPackageIsVersion1 = true
 
 // InternalMessageInfo is a type used internally by generated .pb.go files.
 // This type is not intended to be used by non-generated code.

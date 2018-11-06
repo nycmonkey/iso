@@ -15,7 +15,7 @@ func (c *Currency) Scan(v interface{}) error {
 	// two of the values aren't alphanum strings and therefore invalid proto enums.
 	// Those can't be resolved with the generated map.
 	case "999":
-		*c = Currency_UNKNOWN_CURRENCY
+		*c = UNKNOWN_CURRENCY
 	default:
 		i, ok := Currency_value[s]
 		if !ok {

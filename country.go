@@ -15,9 +15,9 @@ func (c *Country) Scan(v interface{}) error {
 	// two of the values aren't alphanum strings and therefore invalid proto enums.
 	// Those can't be resolved with the generated map.
 	case "00":
-		*c = Country_SUPRANATIONAL
+		*c = SUPRANATIONAL
 	case "99":
-		*c = Country_NOT_APPLICABLE
+		*c = NOT_APPLICABLE
 	default:
 		i, ok := Country_value[s]
 		if !ok {

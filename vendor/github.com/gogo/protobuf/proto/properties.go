@@ -1,3 +1,8 @@
+// Protocol Buffers for Go with Gadgets
+//
+// Copyright (c) 2013, The GoGo Authors. All rights reserved.
+// http://github.com/gogo/protobuf
+//
 // Go support for Protocol Buffers - Google's data interchange format
 //
 // Copyright 2010 The Go Authors.  All rights reserved.
@@ -142,10 +147,15 @@ type Properties struct {
 	proto3   bool   // whether this is known to be a proto3 field; set for []byte only
 	oneof    bool   // whether this is a oneof field
 
-	Default    string // default value
-	HasDefault bool   // whether an explicit default was provided
+	Default     string // default value
+	HasDefault  bool   // whether an explicit default was provided
+	CustomType  string
+	CastType    string
+	StdTime     bool
+	StdDuration bool
 
 	stype reflect.Type      // set for struct types only
+	ctype reflect.Type      // set for custom types only
 	sprop *StructProperties // set for struct types only
 
 	mtype    reflect.Type // set for map types only
@@ -254,6 +264,16 @@ outer:
 				p.Default += "," + strings.Join(fields[i+1:], ",")
 				break outer
 			}
+		case strings.HasPrefix(f, "embedded="):
+			p.OrigName = strings.Split(f, "=")[1]
+		case strings.HasPrefix(f, "customtype="):
+			p.CustomType = strings.Split(f, "=")[1]
+		case strings.HasPrefix(f, "casttype="):
+			p.CastType = strings.Split(f, "=")[1]
+		case f == "stdtime":
+			p.StdTime = true
+		case f == "stdduration":
+			p.StdDuration = true
 		}
 	}
 }
@@ -262,18 +282,40 @@ var protoMessageType = reflect.TypeOf((*Message)(nil)).Elem()
 
 // setFieldProps initializes the field properties for submessages and maps.
 func (p *Properties) setFieldProps(typ reflect.Type, f *reflect.StructField, lockGetProp bool) {
+	isMap := typ.Kind() == reflect.Map
+	if len(p.CustomType) > 0 && !isMap {
+		p.ctype = typ
+		p.setTag(lockGetProp)
+		return
+	}
+	if p.StdTime && !isMap {
+		p.setTag(lockGetProp)
+		return
+	}
+	if p.StdDuration && !isMap {
+		p.setTag(lockGetProp)
+		return
+	}
 	switch t1 := typ; t1.Kind() {
+	case reflect.Struct:
+		p.stype = typ
 	case reflect.Ptr:
 		if t1.Elem().Kind() == reflect.Struct {
 			p.stype = t1.Elem()
 		}
-
 	case reflect.Slice:
-		if t2 := t1.Elem(); t2.Kind() == reflect.Ptr && t2.Elem().Kind() == reflect.Struct {
-			p.stype = t2.Elem()
+		switch t2 := t1.Elem(); t2.Kind() {
+		case reflect.Ptr:
+			switch t3 := t2.Elem(); t3.Kind() {
+			case reflect.Struct:
+				p.stype = t3
+			}
+		case reflect.Struct:
+			p.stype = t2
 		}
 
 	case reflect.Map:
+
 		p.mtype = t1
 		p.mkeyprop = &Properties{}
 		p.mkeyprop.init(reflect.PtrTo(p.mtype.Key()), "Key", f.Tag.Get("protobuf_key"), nil, lockGetProp)
@@ -284,9 +326,16 @@ func (p *Properties) setFieldProps(typ reflect.Type, f *reflect.StructField, loc
 			// so we need encoders for the pointer to this type.
 			vtype = reflect.PtrTo(vtype)
 		}
+
+		p.mvalprop.CustomType = p.CustomType
+		p.mvalprop.StdDuration = p.StdDuration
+		p.mvalprop.StdTime = p.StdTime
 		p.mvalprop.init(vtype, "Value", f.Tag.Get("protobuf_val"), nil, lockGetProp)
 	}
+	p.setTag(lockGetProp)
+}
 
+func (p *Properties) setTag(lockGetProp bool) {
 	if p.stype != nil {
 		if lockGetProp {
 			p.sprop = GetProperties(p.stype)
@@ -366,6 +415,7 @@ func getPropertiesLocked(t reflect.Type) *StructProperties {
 	prop.Prop = make([]*Properties, t.NumField())
 	prop.order = make([]int, t.NumField())
 
+	isOneofMessage := false
 	for i := 0; i < t.NumField(); i++ {
 		f := t.Field(i)
 		p := new(Properties)
@@ -374,6 +424,7 @@ func getPropertiesLocked(t reflect.Type) *StructProperties {
 
 		oneof := f.Tag.Get("protobuf_oneof") // special case
 		if oneof != "" {
+			isOneofMessage = true
 			// Oneof fields don't use the traditional protobuf tag.
 			p.OrigName = oneof
 		}
@@ -394,7 +445,7 @@ func getPropertiesLocked(t reflect.Type) *StructProperties {
 	type oneofMessage interface {
 		XXX_OneofFuncs() (func(Message, *Buffer) error, func(Message, int, int, *Buffer) (bool, error), func(Message) int, []interface{})
 	}
-	if om, ok := reflect.Zero(reflect.PtrTo(t)).Interface().(oneofMessage); ok {
+	if om, ok := reflect.Zero(reflect.PtrTo(t)).Interface().(oneofMessage); isOneofMessage && ok {
 		var oots []interface{}
 		_, _, _, oots = om.XXX_OneofFuncs()
 
@@ -450,6 +501,7 @@ func getPropertiesLocked(t reflect.Type) *StructProperties {
 // The generated code will register the generated maps by calling RegisterEnum.
 
 var enumValueMaps = make(map[string]map[string]int32)
+var enumStringMaps = make(map[string]map[int32]string)
 
 // RegisterEnum is called from the generated code to install the enum descriptor
 // maps into the global table to aid parsing text format protocol buffers.
@@ -458,6 +510,10 @@ func RegisterEnum(typeName string, unusedNameMap map[int32]string, valueMap map[
 		panic("proto: duplicate enum registered: " + typeName)
 	}
 	enumValueMaps[typeName] = valueMap
+	if _, ok := enumStringMaps[typeName]; ok {
+		panic("proto: duplicate enum registered: " + typeName)
+	}
+	enumStringMaps[typeName] = unusedNameMap
 }
 
 // EnumValueMap returns the mapping from names to integers of the
